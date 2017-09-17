@@ -1,4 +1,6 @@
 require 'outline2xlsx/version'
+
+require 'outline2xlsx/outline'
 require 'outline2xlsx/generator'
 
 module Outline2xlsx

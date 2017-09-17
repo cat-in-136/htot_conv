@@ -4,18 +4,7 @@ require 'tempfile'
 
 class XlsxType0Test < Minitest::Test
   def test_output
-    gen = ::Outline2xlsx::Generator::XlsxType0.new(
-      {
-        :key_header => %w[H1 H2 H3],
-        :value_header => %w[H(1) H(2)],
-        :item => [
-          { :key => "1",     :level => 1, :value => %w[1(1)     1(2)     ] },
-          { :key => "1.1",   :level => 2, :value => %w[1.1(1)   1.1(2)   ] },
-          { :key => "1.2",   :level => 2, :value => %w[1.2(1)   1.2(2)   ] },
-          { :key => "1.2.1", :level => 3, :value => %w[1.2.1(1) 1.2.1(2) ] },
-        ],
-      }
-    )
+    gen = ::Outline2xlsx::Generator::XlsxType0.new(reference_outline)
     refute_nil(gen.instance_variable_get(:@data))
 
     Tempfile.open do |f|
@@ -25,19 +14,7 @@ class XlsxType0Test < Minitest::Test
   end
 
   def test_output_worksheet
-    gen = ::Outline2xlsx::Generator::XlsxType0.new(
-      {
-        :key_header => %w[H1 H2 H3],
-        :value_header => %w[H(1) H(2)],
-        :item => [
-          { :key => "1",     :level => 1, :value => %w[1(1)     1(2)     ] },
-          { :key => "1.1",   :level => 2, :value => %w[1.1(1)   1.1(2)   ] },
-          { :key => "1.2",   :level => 2, :value => %w[1.2(1)   1.2(2)   ] },
-          { :key => "1.2.1", :level => 3, :value => %w[1.2.1(1) 1.2.1(2) ] },
-        ],
-      }
-    )
-
+    gen = ::Outline2xlsx::Generator::XlsxType0.new(reference_outline)
     p = Axlsx::Package.new
     p.workbook do |wb|
       wb.add_worksheet() do |ws|
