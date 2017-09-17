@@ -21,6 +21,12 @@ module Outline2xlsx
         @item.all? { |item| item.valid? }
     end
 
+    def ==(v)
+      (@key_header == v.key_header) &&
+        (@value_header == v.value_header) &&
+        (@item == v.item)
+    end
+
     Item = Struct.new(:key, :level, :value) do
       def valid?
         self.level.kind_of?(Numeric) &&
