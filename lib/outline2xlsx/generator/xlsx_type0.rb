@@ -1,11 +1,13 @@
 require 'axlsx'
 
+require 'outline2xlsx/generator/base'
+
 module Outline2xlsx
   module Generator
-    class XlsxType0
+    class XlsxType0 < XlsxBase
       def initialize(data)
+        super(data)
         raise ArgumentError, "data is invalid" unless data.valid?
-        @data = data
       end
 
       def output_to_worksheet(ws)
@@ -16,16 +18,6 @@ module Outline2xlsx
           ws.add_row([item.key, item.level.to_i].concat(item.value),
                      :style => Axlsx::STYLE_THIN_BORDER)
         end
-      end
-
-      def output(outputfile)
-         p = Axlsx::Package.new
-         p.workbook do |wb|
-           wb.add_worksheet do |ws|
-             output_to_worksheet(ws)
-           end
-         end
-         p.serialize(outputfile)
       end
     end
   end
