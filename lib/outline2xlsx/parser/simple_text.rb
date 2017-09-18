@@ -8,7 +8,7 @@ module Outline2xlsx
 
       def parse(input)
         indent_regexp = Regexp.new("^(?<indents>(#{Regexp.escape(option[:indent])})*)")
-        delimiter_regexp = (option[:delimiter].kind_of?(Regexp))? option[:delimiter] : Regexp.new(Regexp.escape(option[:delimiter]))
+        delimiter_regexp = (option[:delimiter].kind_of?(String))? Regexp.new(Regexp.escape(option[:delimiter])) : option[:delimiter]
         outline = Outline2xlsx::Outline.new
         outline.key_header = []
         outline.value_header = []
