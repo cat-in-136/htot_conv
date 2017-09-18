@@ -129,6 +129,17 @@ module Outline2xlsx
         end
       end
 
+      def ancestors # :yields: ancestor
+        ancestors = []
+        node = self.parent
+        until (node.nil? || node.root?)
+          ancestors << node
+          yield node if block_given?
+          node = node.parent
+        end
+        ancestors
+      end
+
       def descendants # :yields: descendant
         descendants = []
         @children.each do |child|

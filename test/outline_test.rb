@@ -213,6 +213,19 @@ class OutlineTreeTest < Minitest::Test
     assert_nil(children[2].next)
   end
 
+  def test_ancestors
+    root = ::Outline2xlsx::Outline::Tree.new
+    assert_equal([], root.ancestors.to_a)
+
+    root << "1"
+    root.to_a[0] << "1.1"
+    root.to_a[0] << "1.2"
+    root.to_a[0].to_a[1] << "1.2.1"
+
+    assert_equal(["1.2", "1"], root.to_a[0].to_a[1].to_a[0].ancestors.map {|v| v.item})
+    assert_equal(["1"], root.to_a[0].to_a[0].ancestors.map {|v| v.item})
+  end
+
   def test_descendants
     root = ::Outline2xlsx::Outline::Tree.new
     assert_equal([], root.descendants.to_a)
