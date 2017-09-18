@@ -21,6 +21,20 @@ module Outline2xlsx
         @item.all? { |item| item.valid? }
     end
 
+    def max_level
+      [
+        @key_header.length,
+        *(@item.map { |v| v.level.to_i }),
+      ].max
+    end
+
+    def max_value_length
+      [
+        @value_header.length,
+        *(@item.map { |v| (v.value)? v.value.length : 0 }),
+      ].max
+    end
+
     def ==(v)
       (@key_header == v.key_header) &&
         (@value_header == v.value_header) &&

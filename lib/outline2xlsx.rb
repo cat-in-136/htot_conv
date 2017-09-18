@@ -1,5 +1,6 @@
 require 'outline2xlsx/version'
 
+require 'outline2xlsx/util'
 require 'outline2xlsx/outline'
 require 'outline2xlsx/generator'
 require 'outline2xlsx/parser'

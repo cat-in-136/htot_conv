@@ -3,6 +3,7 @@ module Outline2xlsx
     class Base
       def initialize(data)
         @data = data
+        raise ArgumentError, "data is invalid" unless data.valid?
       end
 
       def output(outputfile)

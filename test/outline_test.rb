@@ -44,6 +44,51 @@ class OutlineTest < Minitest::Test
     outline.add_item("invalid")
     refute(outline.valid?)
   end
+
+  def test_max_level
+    outline = Outline2xlsx::Outline.new
+    assert_raises { outline.max_level }
+
+    outline.key_header = []
+    outline.add_item("1", 1)
+    assert_equal(1, outline.max_level)
+
+    outline.add_item("1")
+    assert_equal(1, outline.max_level)
+    outline.add_item("1.1", 2)
+    assert_equal(2, outline.max_level)
+
+    outline.key_header = %w[H1]
+    assert_equal(2, outline.max_level)
+    outline.key_header = %w[H1 H2]
+    assert_equal(2, outline.max_level)
+    outline.key_header = %w[H1 H2 H3]
+    assert_equal(3, outline.max_level)
+
+    (1..25).each { |level| outline.add_item("level#{level}", level) }
+    assert_equal(25, outline.max_level)
+  end
+
+  def test_max_value_length
+    outline = Outline2xlsx::Outline.new
+    assert_raises { outline.max_value_length }
+
+    outline.value_header = []
+    outline.add_item("1", 1)
+    assert_equal(0, outline.max_value_length)
+
+    outline.add_item("1", 1, %w[a])
+    assert_equal(1, outline.max_value_length)
+    outline.add_item("1", 1, %w[a b c])
+    assert_equal(3, outline.max_value_length)
+
+    outline.value_header = %w[H1 H2 H3]
+    assert_equal(3, outline.max_value_length)
+    outline.value_header = %w[H1 H2]
+    assert_equal(3, outline.max_value_length)
+    outline.value_header = %w[H1 H2 H3 H4]
+    assert_equal(4, outline.max_value_length)
+  end
 end
 
 class OutlineItemTest < Minitest::Test
