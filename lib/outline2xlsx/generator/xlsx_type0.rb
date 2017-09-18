@@ -11,12 +11,19 @@ module Outline2xlsx
       end
 
       def output_to_worksheet(ws)
-        ws.add_row([@data.key_header[0], 'Level'].concat(@data.value_header),
-                   :style => Axlsx::STYLE_THIN_BORDER)
+        max_item_length = [
+          @data.value_header.length,
+          @data.item.map { |v| v.value.length }.max,
+        ].max
+
+        ws.add_row([@data.key_header[0], 'Level'].concat(
+          @data.value_header.concat([nil] * (max_item_length - @data.value_header.length))),
+        :style => Axlsx::STYLE_THIN_BORDER)
 
         @data.item.each do |item|
-          ws.add_row([item.key, item.level.to_i].concat(item.value),
-                     :style => Axlsx::STYLE_THIN_BORDER)
+          ws.add_row([item.key, item.level.to_i].concat(
+            item.value.concat([nil] * (max_item_length - item.value.length))),
+          :style => Axlsx::STYLE_THIN_BORDER)
         end
       end
     end
