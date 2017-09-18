@@ -89,6 +89,39 @@ class OutlineTest < Minitest::Test
     outline.value_header = %w[H1 H2 H3 H4]
     assert_equal(4, outline.max_value_length)
   end
+
+  def test_to_tree
+    outline = Outline2xlsx::Outline.new
+    tree = outline.to_tree
+    assert(tree.root?)
+    assert_equal([], tree.to_a)
+
+    outline.add_item("1", 1)
+    tree = outline.to_tree
+    assert_equal([["1", 1]], tree.to_a.map {|v| [v.item.key, v.item.level]})
+
+    outline.add_item("1.1", 2)
+    tree = outline.to_tree
+    assert_equal([["1", 1]], tree.to_a.map {|v| [v.item.key, v.item.level]})
+    assert_equal([["1.1", 2]], tree.to_a[0].to_a.map {|v| [v.item.key, v.item.level]})
+
+    outline.add_item("1.2", 2)
+    tree = outline.to_tree
+    assert_equal([["1", 1]], tree.to_a.map {|v| [v.item.key, v.item.level]})
+    assert_equal([["1.1", 2], ["1.2", 2]], tree.to_a[0].to_a.map {|v| [v.item.key, v.item.level]})
+
+    outline.add_item("1.2.3", 3)
+    tree = outline.to_tree
+    assert_equal([["1", 1]], tree.to_a.map {|v| [v.item.key, v.item.level]})
+    assert_equal([["1.1", 2], ["1.2", 2]], tree.to_a[0].to_a.map {|v| [v.item.key, v.item.level]})
+    assert_equal([["1.2.3", 3]], tree.to_a[0].to_a[1].to_a.map {|v| [v.item.key, v.item.level]})
+
+    outline.add_item("2", 1)
+    tree = outline.to_tree
+    assert_equal([["1", 1], ["2", 1]], tree.to_a.map {|v| [v.item.key, v.item.level]})
+    assert_equal([["1.1", 2], ["1.2", 2]], tree.to_a[0].to_a.map {|v| [v.item.key, v.item.level]})
+    assert_equal([["1.2.3", 3]], tree.to_a[0].to_a[1].to_a.map {|v| [v.item.key, v.item.level]})
+  end
 end
 
 class OutlineItemTest < Minitest::Test
@@ -125,5 +158,71 @@ class OutlineItemTest < Minitest::Test
     refute(item.valid?)
     item = Outline2xlsx::Outline::Item.new('key', 1, (1..2))
     refute(item.valid?)
+  end
+end
+
+class OutlineTreeTest < Minitest::Test
+  def test_initialize
+    root = ::Outline2xlsx::Outline::Tree.new
+    assert_nil(root.parent)
+    assert_nil(root.item)
+    assert(root.root?)
+
+    child = Outline2xlsx::Outline::Tree.new(Outline2xlsx::Outline::Item.new, root)
+    assert_equal(root, child.parent)
+    assert(root.root?)
+    assert_equal(Outline2xlsx::Outline::Item.new, child.item)
+    refute(child.root?)
+  end
+
+  def test_add
+    root = ::Outline2xlsx::Outline::Tree.new
+    assert_equal(root, root.add(1))
+    assert_equal([1], root.to_a.map {|v| v.item })
+    assert_equal(root, root << 2)
+    assert_equal([1, 2], root.to_a.map {|v| v.item })
+    assert_equal(root, root << 3 << 4)
+    assert_equal([1, 2, 3, 4], root.to_a.map {|v| v.item })
+  end
+
+  def test_root
+    root = ::Outline2xlsx::Outline::Tree.new
+    assert_equal(root, root.root)
+
+    child = ::Outline2xlsx::Outline::Tree.new(nil, root)
+    assert_equal(root, child.root)
+
+    grandchild = ::Outline2xlsx::Outline::Tree.new(nil, child)
+    assert_equal(root, grandchild.root)
+  end
+
+  def test_next_prev
+    root = ::Outline2xlsx::Outline::Tree.new
+    root << 1 << 2 << 3
+    children = root.to_a
+
+    assert_nil(root.prev)
+    assert_nil(root.next)
+
+    assert_nil(children[0].prev)
+    assert_equal(children[0], children[1].prev)
+    assert_equal(children[1], children[2].prev)
+
+    assert_equal(children[1], children[0].next)
+    assert_equal(children[2], children[1].next)
+    assert_nil(children[2].next)
+  end
+
+  def test_descendants
+    root = ::Outline2xlsx::Outline::Tree.new
+    assert_equal([], root.descendants.to_a)
+
+    root << "1"
+    root.to_a[0] << "1.1"
+    root.to_a[0] << "1.2"
+    root.to_a[0].to_a[1] << "1.2.1"
+    root << "2"
+
+    assert_equal(["1", "1.1", "1.2", "1.2.1", "2"], root.descendants.map {|v| v.item})
   end
 end
