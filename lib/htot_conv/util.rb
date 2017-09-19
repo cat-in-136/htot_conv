@@ -1,5 +1,5 @@
 
-module Outline2xlsx
+module HTOTConv
   module Util
     def pad_array(array, length, pad=nil)
       raise ArgumentError, "array is not an array" unless array.kind_of?(Array)

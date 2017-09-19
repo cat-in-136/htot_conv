@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in outline2xlsx.gemspec
+# Specify your gem's dependencies in htot_conv.gemspec
 gemspec

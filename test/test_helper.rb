@@ -1,10 +1,10 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'outline2xlsx'
+require 'htot_conv'
 
 require 'minitest/autorun'
 
 def reference_outline
-  outline = Outline2xlsx::Outline.new
+  outline = HTOTConv::Outline.new
   outline.key_header   = %w[H1 H2 H3]
   outline.value_header = %w[H(1) H(2)]
   outline.add_item("1",     1, %w[1(1)     1(2)     ])

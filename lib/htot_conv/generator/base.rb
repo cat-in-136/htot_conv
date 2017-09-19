@@ -1,4 +1,4 @@
-module Outline2xlsx
+module HTOTConv
   module Generator
     class Base
       def initialize(data)

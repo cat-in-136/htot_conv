@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'outline2xlsx/version'
+require 'htot_conv/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "outline2xlsx"
-  spec.version       = Outline2xlsx::VERSION
+  spec.name          = "htot_conv"
+  spec.version       = HTOTConv::VERSION
   spec.authors       = ["@cat_in_136"]
   spec.email         = ["cat.in.136+github@gmail.com"]
 
-  spec.summary       = %q{Convert from a simple outline text into xlsx file}
-  spec.description   = %q{Convert from a simple outline text into xlsx file}
-  spec.homepage      = "https://github.com/cat-in-136/outline2xlsx"
+  spec.summary       = %q{Hierarchical-Tree Outline Text Converter}
+  spec.description   = %q{Convert from a simple hierarchical-tree outline text into xlsx file}
+  spec.homepage      = "https://github.com/cat-in-136/htot_conv"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

@@ -1,4 +1,4 @@
-module Outline2xlsx
+module HTOTConv
   class Outline
     def initialize
       @item = []

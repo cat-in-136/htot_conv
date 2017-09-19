@@ -4,7 +4,7 @@ require 'tempfile'
 
 class XlsxType2Test < Minitest::Test
   def test_output_worksheet
-    gen = ::Outline2xlsx::Generator::XlsxType2.new(reference_outline)
+    gen = ::HTOTConv::Generator::XlsxType2.new(reference_outline)
     p = Axlsx::Package.new
     p.workbook do |wb|
       wb.add_worksheet do |ws|

@@ -2,17 +2,17 @@ require 'test_helper'
 
 class SimpleTextTest < Minitest::Test
   def test_initialize
-    parser = ::Outline2xlsx::Parser::SimpleText.new
+    parser = ::HTOTConv::Parser::SimpleText.new
     assert_equal("\t", parser.option[:indent])
     assert_nil(parser.option[:delimiter])
 
-    parser = ::Outline2xlsx::Parser::SimpleText.new({:indent => '  ', :delimiter => "\t"})
+    parser = ::HTOTConv::Parser::SimpleText.new({:indent => '  ', :delimiter => "\t"})
     assert_equal("  ", parser.option[:indent])
     assert_equal("\t", parser.option[:delimiter])
   end
 
   def test_parse
-    parser = ::Outline2xlsx::Parser::SimpleText.new({:indent => '  ', :delimiter => /\s*,\s*/})
+    parser = ::HTOTConv::Parser::SimpleText.new({:indent => '  ', :delimiter => /\s*,\s*/})
     outline = parser.parse(<<EOD)
 1           , 1(1),     1(2)
   1.1       , 1.1(1),   1.1(2)

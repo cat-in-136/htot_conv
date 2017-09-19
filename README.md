@@ -1,13 +1,13 @@
-# Outline2xlsx
+# HTOTConv - Hierarchical-Tree Outline Text Converter
 
-Convert from a simple outline text into xlsx file
+Convert from a simple hierarchical-tree outline text into xlsx file
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'outline2xlsx'
+gem 'htot_conv'
 ```
 
 And then execute:
@@ -16,7 +16,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install outline2xlsx
+    $ gem install htot_conv
 
 ## Usage
 
@@ -30,7 +30,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/cat-in-136/outline2xlsx.
+Bug reports and pull requests are welcome on GitHub at https://github.com/cat-in-136/htot_conv.
 
 
 ## License

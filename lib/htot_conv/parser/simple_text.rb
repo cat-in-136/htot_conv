@@ -1,4 +1,4 @@
-module Outline2xlsx
+module HTOTConv
   module Parser
     class SimpleText
       def initialize(option={})
@@ -9,7 +9,7 @@ module Outline2xlsx
       def parse(input)
         indent_regexp = Regexp.new("^(?<indents>(#{Regexp.escape(option[:indent])})*)")
         delimiter_regexp = (option[:delimiter].kind_of?(String))? Regexp.new(Regexp.escape(option[:delimiter])) : option[:delimiter]
-        outline = Outline2xlsx::Outline.new
+        outline = HTOTConv::Outline.new
         outline.key_header = []
         outline.value_header = []
 
