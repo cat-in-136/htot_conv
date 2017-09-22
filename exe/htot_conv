@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+require 'optparse'
+
+require 'rubygems'
+require 'htot_conv'
+
+DEFAULT_OPTIONS = {
+  :input_type => :simple_text,
+  :output_type => :xlsx_type2,
+}
+options = DEFAULT_OPTIONS.dup
+opts = OptionParser.new do |opts|
+  opts.banner       = %q{Hierarchical-Tree Outline Text Converter}
+  opts.define_head    %q{Usage: htot_conv [options] [input] [output]}
+  opts.separator      %q{}
+  opts.separator      %q{Options:}
+
+  input_types = HTOTConv::Parser.types.map { |v| [v, v.to_s.tr("_", "-")] }.flatten
+  output_types = HTOTConv::Generator.types.map { |v| [v, v.to_s.tr("_", "-")] }.flatten
+
+  opts.on("--input-type=type", input_types, "Input file type (default: #{DEFAULT_OPTIONS[:input_type]})") do |v|
+    options[:input_type] = v.to_s.tr("-", "_")
+  end
+  opts.on("--output-type=type", output_types, "Output file type (default: #{DEFAULT_OPTIONS[:output_type]})") do |v|
+    options[:output_type] = v.to_s.tr("-", "_")
+  end
+
+  opts.on_tail("-?", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+  opts.on_tail("--version", "Show version") do
+    $stdout << "htot_conv #{HTOTConv::VERSION}\n"
+    exit
+  end
+end
+
+begin
+  opts.parse!
+rescue OptionParser::ParseError => ex
+  $stderr << ex.message << "\n"
+  exit 1
+end
+
+inio  = ((ARGV.length > 0) && (ARGV[0] != "-"))? ARGF : $stdin
+outio = ((ARGV.length > 1) && (ARGV[1] != "-"))? ARGV[1] : $stdout
+
+HTOTConv.convert(inio, options[:input_type], outio, options[:output_type])

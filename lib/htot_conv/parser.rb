@@ -7,5 +7,16 @@ module HTOTConv
       klass.new(*args)
     end
     module_function :create
+
+    def types
+      HTOTConv::Parser.constants.reject { |klass|
+        klass =~ /Base$/
+      }.select { |klass|
+        HTOTConv::Parser.const_get(klass).kind_of?(Class)
+      }.map { |klass|
+        Rinne.to_snake(klass.to_s).to_sym
+      }
+    end
+    module_function :types
   end
 end
