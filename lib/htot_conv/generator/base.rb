@@ -1,9 +1,13 @@
 module HTOTConv
   module Generator
     class Base
-      def initialize(data)
+      def initialize(data, option={})
         @data = data
+        @option = self.class.option_help.inject({}) { |h, pair| h[pair[0]] = pair[1][:default]; h}.merge(option)
         raise ArgumentError, "data is invalid" unless data.valid?
+      end
+      def self.option_help
+        {}
       end
 
       def output(outputfile)

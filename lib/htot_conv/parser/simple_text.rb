@@ -3,8 +3,19 @@ require 'htot_conv/parser/base'
 module HTOTConv
   module Parser
     class SimpleText < Base
-      def initialize(option={})
-        @option = { :indent => "\t", :delimiter => nil }.merge(option)
+      def self.option_help
+        {
+          :indent => {
+            :default => "\t",
+            :pat => String,
+            :desc => "indent character (default: TAB)",
+          },
+          :delimiter => {
+            :default => nil,
+            :pat => String,
+            :desc => "separator character of additional data"
+          },
+        }
       end
 
       def parse(input)

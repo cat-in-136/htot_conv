@@ -3,10 +3,6 @@ require 'htot_conv/parser/base'
 module HTOTConv
   module Parser
     class HtmlList < Base
-      def initialize(option={})
-        @option = {}.merge(option)
-      end
-
       def parse(input)
         outline = HTOTConv::Outline.new
         outline.key_header = []
