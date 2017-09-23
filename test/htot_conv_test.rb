@@ -39,4 +39,13 @@ EOD
     assert(has_xl_worksheets_sheet1_xml)
   end
 
+  def test_parser_generator_types
+    [::HTOTConv::Parser, ::HTOTConv::Generator].each do |klass|
+      klass.types.each do |type|
+        assert_kind_of(Symbol, type)
+        assert_kind_of(Class, klass.const_get(Rinne.camelize(type.to_s)))
+      end
+    end
+  end
+
 end
