@@ -1,10 +1,11 @@
+require 'htot_conv/parser/base'
+
 module HTOTConv
   module Parser
-    class SimpleText
+    class SimpleText < Base
       def initialize(option={})
         @option = { :indent => "\t", :delimiter => nil }.merge(option)
       end
-      attr_accessor :option
 
       def parse(input)
         indent_regexp = Regexp.new("^(?<indents>(#{Regexp.escape(option[:indent])})*)")

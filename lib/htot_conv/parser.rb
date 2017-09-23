@@ -1,4 +1,6 @@
+require 'htot_conv/parser/base.rb'
 require 'htot_conv/parser/simple_text.rb'
+require 'htot_conv/parser/html_list.rb'
 
 module HTOTConv
   module Parser
