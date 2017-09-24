@@ -11,7 +11,8 @@ class HTOTConvTest < Minitest::Test
   def test_convert
     has_xl_worksheets_sheet1_xml = false
 
-    Tempfile.create('test.xlsx') do |f|
+    f = Tempfile.new(['test', '.xlsx'])
+    begin
       HTOTConv.convert(<<EOD, :simple_text, f, :xlsx_type0, {:indent => '  ', :delimiter => /\s*,\s*/})
 1           , 1(1),     1(2)
   1.1       , 1.1(1),   1.1(2)
@@ -34,6 +35,8 @@ EOD
           end
         end
       end
+    ensure
+      f.close!
     end
 
     assert(has_xl_worksheets_sheet1_xml)
