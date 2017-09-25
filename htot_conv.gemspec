@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["cat.in.136+github@gmail.com"]
 
   spec.summary       = %q{Hierarchical-Tree Outline Text Converter}
-  spec.description   = %q{Convert from a simple hierarchical-tree outline text into xlsx file}
+  spec.description   = %q{Convert from a simple hierarchical-tree outline text into ugly xlsx file}
   spec.homepage      = "https://github.com/cat-in-136/htot_conv"
   spec.license       = "MIT"
 
@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "axlsx"
+  spec.add_dependency "axlsx", "~> 2.0.1"
   spec.add_dependency "rinne", "~> 0.0.3"
 
   spec.add_development_dependency "bundler", "~> 1.12"

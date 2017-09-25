@@ -1,39 +1,141 @@
 # HTOTConv - Hierarchical-Tree Outline Text Converter
 
-Convert from a simple hierarchical-tree outline text into xlsx file
+Convert from a simple hierarchical-tree outline text into ugly xlsx file
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'htot_conv'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Install `htot_conv` via RubyGems. Simply run the following command to install:
 
     $ gem install htot_conv
 
 ## Usage
 
-TODO: Write usage instructions here
+    $ cat outline.txt
+    President
+    .VP Marketing
+    ..Manager
+    ..Manager
+    .VP Production
+    ..Manager
+    ..Manager
+    .VP Sales
+    ..Manager
+    ..Manager
+    $ htot_conv -f simple_text --from-indent=. -t xlsx_type2 outline.txt outline.xlsx
+    $ xdg-open outline.xlsx
+
+### Types of input
+
+#### `simple_text`
+
+ * A text file consisting of multiple lines where:
+   * `<line> ::= { <indent> } <key> { <delimiter> <value> }`
+   * `<key>` : a text that does not start with `<indent>` and does not contain `<delimiter>` (if `<delimiter>` specified).
+   * `<value>` : a text that does not contain `<delimiter>`.
+   * `<indent>` : specified by `--from-indent` option
+   * `<delimiter>` : specified by `--from-delimiter` option
+
+#### `html_list`
+
+ * HTML `<ul><li>` and/or `<ol><li>` [nesting list](https://www.w3.org/wiki/HTML_lists#Nesting_lists).
+ * All text outside of `<li>` elements is ignored.
+
+### Types of output
+
+The sample input used in this section are as follows:
+
+    1,1(1),1(2)
+      1.1,1.1(1),1.1(2)
+      1.2,1.2(1),1.2(2)
+        1.2.1,1.2.1(1),1.2.1(2)
+
+ * key header: H1, H2, H3
+ * value header: H(1), H(2)
+
+#### `xlsx_type0`
+
+| H1    | Level | H(1)     | H(2)     | 
+|-------|-------|----------|----------| 
+| 1     | 1     | 1(1)     | 1(2)     | 
+| 1.1   | 2     | 1.1(1)   | 1.1(2)   | 
+| 1.2   | 2     | 1.2(1)   | 1.2(2)   | 
+| 1.2.1 | 3     | 1.2.1(1) | 1.2.1(2) | 
+
+#### `xlsx_type1`
+
+| H1    | H(1)     | H(2)     | 
+|-------|----------|----------| 
+| 1     | 1(1)     | 1(2)     | 
+| 1.1   | 1.1(1)   | 1.1(2)   | 
+| 1.2   | 1.2(1)   | 1.2(2)   | 
+| 1.2.1 | 1.2.1(1) | 1.2.1(2) | 
+
+Not implemented (TODO):
+
+ * Fill with different background color for each level.
+
+#### `xlsx_type2`
+
+| H1 | H2  | H3    | H(1)     | H(2)     | 
+|----|-----|-------|----------|----------| 
+| 1  |     |       | 1(1)     | 1(2)     | 
+|    | 1.1 |       | 1.1(1)   | 1.1(2)   | 
+|    | 1.2 |       | 1.2(1)   | 1.2(2)   | 
+|    |     | 1.2.1 | 1.2.1(1) | 1.2.1(2) | 
+
+Not implemented (TODO):
+
+ * Cell integration over row.
+
+#### `xlsx_type3`
+
+Not supported (implemented) as of now.
+
+| H1 | H(1) |        |          | H(2)     | 
+|----|------|--------|----------|----------| 
+| 1  | 1(1) |        |          | 1(2)     | 
+|    | 1.1  | 1.1(1) |          | 1.1(2)   | 
+|    | 1.2  | 1.2(1) |          | 1.2(2)   | 
+|    |      | 1.2.1  | 1.2.1(1) | 1.2.1(2) | 
+
+TODO: Github Flavored Markdown does not support for column span.
+So, this document does not correctly represent type-3 xlsx spread sheet.
+
+#### `xlsx_type4`
+
+| H1 | H2  | H3    | H(1)     | H(2)     | 
+|----|-----|-------|----------|----------| 
+| 1  | 1.1 |       | 1.1(1)   | 1.1(2)   | 
+|    | 1.2 | 1.2.1 | 1.2.1(1) | 1.2.1(2) | 
+
+Not implemented (TODO):
+
+ * Cell integration over column.
+
+#### `xlsx_type5`
+
+| H1 | H2  | H3    | H(1)     | H(2)     | 
+|----|-----|-------|----------|----------| 
+| 1  | 1.1 |       | 1.1(1)   | 1.1(2)   | 
+| 1  | 1.2 | 1.2.1 | 1.2.1(1) | 1.2.1(2) | 
+
+Not implemented (TODO):
+
+ * Cell integration over column.
+ * Apply auto filter to the first (header) row.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+    $ bundle install --path=vendor/bundle --with development test
+    $ bundle exec rake test
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/cat-in-136/htot_conv.
+Bug reports and pull requests are welcome on GitHub at <https://github.com/cat-in-136/htot_conv>.
 
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+[MIT License](http://opensource.org/licenses/MIT).
+See the `LICENSE.txt` file.
 
