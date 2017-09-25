@@ -105,7 +105,7 @@ options = script_opts.options
 from_options = script_opts.from_options
 to_options = script_opts.to_options
 
-inio  = ((ARGV.length > 0) && (ARGV[0] != "-"))? ARGF : $stdin
-outio = ((ARGV.length > 1) && (ARGV[1] != "-"))? ARGV[1] : $stdout
+inio  = ((ARGV.length > 0) && (ARGV[0] != "-"))? File.open(ARGV[0], "rb") : $stdin
+outio = ((ARGV.length > 1) && (ARGV[1] != "-"))? File.open(ARGV[1], "wb") : $stdout
 
 HTOTConv.convert(inio, options[:from_type], outio, options[:to_type], from_options, to_options)
