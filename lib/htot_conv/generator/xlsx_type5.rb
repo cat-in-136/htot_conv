@@ -37,6 +37,8 @@ module HTOTConv
             end
           end
         end
+
+        ws.auto_filter = "A1:#{ws.rows.last.cells[max_level + max_value_length - 1].r}"
       end
     end
   end
