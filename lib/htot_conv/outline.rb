@@ -96,7 +96,7 @@ module HTOTConv
       end
       alias :<< :add
 
-      def each # :yields: child
+      def each # :yield: child
         @children.each do |v|
           yield v if block_given?
         end
@@ -129,7 +129,7 @@ module HTOTConv
         end
       end
 
-      def ancestors # :yields: ancestor
+      def ancestors # :yield: ancestor
         ancestors = []
         node = self.parent
         until (node.nil? || node.root?)
@@ -140,7 +140,7 @@ module HTOTConv
         ancestors
       end
 
-      def descendants # :yields: descendant
+      def descendants # :yield: descendant
         descendants = []
         @children.each do |child|
           descendants << child
