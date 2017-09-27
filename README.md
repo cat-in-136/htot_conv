@@ -125,7 +125,6 @@ Not implemented (TODO):
 Not implemented (TODO):
 
  * Cell integration over column.
- * Apply auto filter to the first (header) row.
 
 ## Development
 
