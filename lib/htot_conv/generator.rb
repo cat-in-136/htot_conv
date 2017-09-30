@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'htot_conv/generator/xlsx_type0.rb'
 require 'htot_conv/generator/xlsx_type1.rb'
 require 'htot_conv/generator/xlsx_type2.rb'

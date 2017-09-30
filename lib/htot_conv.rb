@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'htot_conv/version'
 
 require 'htot_conv/util'

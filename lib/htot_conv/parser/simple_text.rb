@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'htot_conv/parser/base'
 
 module HTOTConv
