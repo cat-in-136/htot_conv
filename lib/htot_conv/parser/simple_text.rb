@@ -14,7 +14,12 @@ module HTOTConv
           :delimiter => {
             :default => nil,
             :pat => String,
-            :desc => "separator character of additional data"
+            :desc => "separator character of additional data",
+          },
+          :value_header => {
+            :default => [],
+            :pat => Array,
+            :desc => "value header"
           },
         }
       end
@@ -24,7 +29,7 @@ module HTOTConv
         delimiter_regexp = (option[:delimiter].kind_of?(String))? Regexp.new(Regexp.escape(option[:delimiter])) : option[:delimiter]
         outline = HTOTConv::Outline.new
         outline.key_header = []
-        outline.value_header = []
+        outline.value_header = option[:value_header]
 
         input.each_line do |line|
           level = 1
