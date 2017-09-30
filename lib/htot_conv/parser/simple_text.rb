@@ -16,10 +16,15 @@ module HTOTConv
             :pat => String,
             :desc => "separator character of additional data",
           },
+          :preserve_empty_line => {
+            :defalut => false,
+            :pat => FalseClass,
+            :desc => "preserve empty line as a level-1 item (default: no)",
+          },
           :value_header => {
             :default => [],
             :pat => Array,
-            :desc => "value header"
+            :desc => "value header",
           },
         }
       end
@@ -32,6 +37,8 @@ module HTOTConv
         outline.value_header = option[:value_header]
 
         input.each_line do |line|
+          next if ((line.chomp == "") && (!option[:preserve_empty_line]))
+
           level = 1
           value = []
           if (option[:indent] || '').length > 0
