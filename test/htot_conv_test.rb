@@ -20,6 +20,8 @@ class HTOTConvTest < Minitest::Test
   1.2       , 1.2(1),   1.2(2)
     1.2.1   , 1.2.1(1), 1.2.1(2)
 EOD
+      f.rewind
+
       Zip::File.open(f) do |zf|
         zf.each do |entry|
           if (entry.name == 'xl/worksheets/sheet1.xml')

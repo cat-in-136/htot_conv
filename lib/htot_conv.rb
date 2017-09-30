@@ -5,6 +5,7 @@ require 'htot_conv/util'
 require 'htot_conv/outline'
 require 'htot_conv/generator'
 require 'htot_conv/parser'
+# require 'htot_conv/cli'
 
 module HTOTConv
 

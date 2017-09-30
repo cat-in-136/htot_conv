@@ -15,3 +15,13 @@ def reference_outline
   outline
 end
 
+module MiniTest::Assertions
+  def assert_exit_with(status) # :yield:
+    ex = assert_raises(SystemExit) do
+      yield
+    end
+    assert_equal(status, ex.status, "exit status mismatch")
+    ex
+  end
+end
+
