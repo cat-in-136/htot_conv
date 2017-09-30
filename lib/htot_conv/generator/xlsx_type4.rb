@@ -6,6 +6,16 @@ require 'htot_conv/generator/base'
 module HTOTConv
   module Generator
     class XlsxType4 < XlsxBase
+      def self.option_help
+        {
+          :integrate_cells => {
+            :default => nil,
+            :pat => [:rowspan],
+            :desc => "integrate key cells (specify 'rowspan')",
+          },
+        }
+      end
+
       def output_to_worksheet(ws)
         max_level = @data.max_level
         max_value_length = @data.max_value_length
@@ -45,6 +55,12 @@ module HTOTConv
               edges << :right if (level == max_level)
               ws.rows.last.cells[level - 1].style = ws.styles.add_style(
                 :border => { :style => :thin, :color => "00", :edges => edges })
+            end
+
+            if [:rowspan].include?(@option[:integrate_cells])
+              if item.level < max_level
+                ws.merge_cells(ws.rows.last.cells[((item.level - 1)..(max_level - 1))])
+              end
             end
           end
         end

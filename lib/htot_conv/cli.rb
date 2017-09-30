@@ -63,18 +63,35 @@ module HTOTConv
 
       private
       def define_sub_options(opts, klass, prefix) # :yields: key, v
+        options = {}
+
         klass.types.each do |type|
           type_klass = klass.const_get(Rinne.camelize(type.to_s))
           type_klass.option_help.each do |key,v|
-            long_option = "--#{prefix}-#{key.to_s.tr('_','-')}=VAL"
-            cmd_switch = opts.top.list.find { |v| v.kind_of?(OptionParser::Switch) && v.long.include?(long_option) }
-            if cmd_switch
-              cmd_switch.desc << "For #{type}, #{v[:desc]}"
-            else
-              opts.on(long_option, v[:pat], "For #{type}, #{v[:desc]}") do |v|
-                yield key, v
+            long_option = "--#{prefix}-#{key.to_s.tr('_','-')}"
+
+            if options.include?(long_option)
+              options[long_option][:desc] << "For #{type}, #{v[:desc]}"
+              unless options[long_option][:pattern] == v[:pat]
+                if (options[long_option][:pattern].kind_of?(Array) && v[:pat].kind_of?(Array))
+                  options[long_option][:pattern] = options[long_option][:pattern].concat(v[:pat]).uniq
+                else
+                  raise "pattern registration mismatch around #{long_option}"
+                end
               end
+            else
+              options[long_option] = {
+                :key => key,
+                :pattern => v[:pat],
+                :desc => ["For #{type}, #{v[:desc]}"],
+              }
             end
+          end
+        end
+
+        options.each do |long_option, value|
+          opts.on("#{long_option}=VAL", value[:pattern], *value[:desc]) do |v|
+            yield value[:key], v
           end
         end
       end

@@ -86,10 +86,6 @@ Not implemented (TODO):
 |    | 1.2 |       | 1.2(1)   | 1.2(2)   | 
 |    |     | 1.2.1 | 1.2.1(1) | 1.2.1(2) | 
 
-Not implemented (TODO):
-
- * Cell integration over row.
-
 #### `xlsx_type3`
 
 Not supported (implemented) as of now.
@@ -113,7 +109,7 @@ So, this document does not correctly represent type-3 xlsx spread sheet.
 
 Not implemented (TODO):
 
- * Cell integration over column.
+ * Cell integration over column. (integration over row is supported)
 
 #### `xlsx_type5`
 
@@ -121,10 +117,6 @@ Not implemented (TODO):
 |----|-----|-------|----------|----------| 
 | 1  | 1.1 |       | 1.1(1)   | 1.1(2)   | 
 | 1  | 1.2 | 1.2.1 | 1.2.1(1) | 1.2.1(2) | 
-
-Not implemented (TODO):
-
- * Cell integration over column.
 
 ## Development
 
