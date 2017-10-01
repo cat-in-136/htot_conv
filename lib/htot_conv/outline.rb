@@ -130,28 +130,25 @@ module HTOTConv
         end
       end
 
-      def ancestors # :yield: ancestor
-        ancestors = []
-        node = self.parent
-        until (node.nil? || node.root?)
-          ancestors << node
-          yield node if block_given?
-          node = node.parent
+      def ancestors
+        Enumerator.new do |y|
+          node = self.parent
+          until (node.nil? || node.root?)
+            y << node
+            node = node.parent
+          end 
         end
-        ancestors
       end
 
-      def descendants # :yield: descendant
-        descendants = []
-        @children.each do |child|
-          descendants << child
-          yield child if block_given?
-          child.descendants do |descendant|
-            descendants << descendant
-            yield descendant if block_given?
+      def descendants
+        Enumerator.new do |y|
+          @children.each do |child|
+            y << child
+            child.descendants.each do |descendant|
+              y << descendant
+            end
           end
         end
-        descendants
       end
     end
   end

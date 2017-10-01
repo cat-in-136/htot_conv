@@ -30,7 +30,7 @@ module HTOTConv
 
             key_cell = Array.new(max_level, nil)
             key_cell[node.item.level - 1] = item.key
-            node.ancestors do |ancestor|
+            node.ancestors.each do |ancestor|
               key_cell[ancestor.item.level - 1] = ancestor.item.key if ancestor.item
             end
 

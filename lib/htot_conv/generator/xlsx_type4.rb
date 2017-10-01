@@ -30,7 +30,7 @@ module HTOTConv
 
             key_cell = Array.new(max_level, nil)
             key_cell[node.item.level - 1] = item.key
-            node.ancestors do |ancestor|
+            node.ancestors.each do |ancestor|
               key_cell[ancestor.item.level - 1] = ancestor.item.key if ancestor.item
               break if ancestor.prev
             end
@@ -40,7 +40,7 @@ module HTOTConv
             ws.add_row(key_cell.concat(value_cell),
                        :style => Axlsx::STYLE_THIN_BORDER)
 
-            [node].concat(node.ancestors).each do |ancestor|
+            [node].concat(node.ancestors.to_a).each do |ancestor|
               if (ancestor.parent && ancestor.parent.item && ancestor.parent.item.level)
                 edges = [:left, :right]
                 edges << :top unless ancestor.prev
