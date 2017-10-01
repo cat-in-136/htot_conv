@@ -10,8 +10,8 @@ module HTOTConv
         {
           :integrate_cells => {
             :default => nil,
-            :pat => [:rowspan],
-            :desc => "integrate key cells (specify 'rowspan')",
+            :pat => [:colspan],
+            :desc => "integrate key cells (specify 'colspan')",
           },
         }
       end
@@ -57,7 +57,7 @@ module HTOTConv
                 :border => { :style => :thin, :color => "00", :edges => edges })
             end
 
-            if [:rowspan].include?(@option[:integrate_cells])
+            if [:colspan].include?(@option[:integrate_cells])
               if item.level < max_level
                 ws.merge_cells(ws.rows.last.cells[((item.level - 1)..(max_level - 1))])
               end

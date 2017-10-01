@@ -23,7 +23,7 @@ class XlsxType5Test < Minitest::Test
   end
 
   def test_output_worksheet_with_integrate_cells
-    gen = ::HTOTConv::Generator::XlsxType5.new(reference_outline, :integrate_cells => :rowspan)
+    gen = ::HTOTConv::Generator::XlsxType5.new(reference_outline, :integrate_cells => :colspan)
     p = Axlsx::Package.new
     p.workbook do |wb|
       wb.add_worksheet do |ws|
