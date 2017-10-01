@@ -10,8 +10,8 @@ module HTOTConv
         {
           :integrate_cells => {
             :default => nil,
-            :pat => [:colspan],
-            :desc => "integrate key cells (specify 'colspan')",
+            :pat => [:colspan, :rowspan, :both],
+            :desc => "integrate key cells (specify 'colspan', 'rowspan' or 'all')",
           },
         }
       end
@@ -24,6 +24,7 @@ module HTOTConv
           HTOTConv::Util.pad_array(@data.value_header, max_value_length)),
         :style => Axlsx::STYLE_THIN_BORDER)
 
+        rowspan_cells = Array.new(max_level) { [] }
         @data.to_tree.descendants.each do |node|
           if node.leaf?
             item = node.item
@@ -57,10 +58,23 @@ module HTOTConv
                 :border => { :style => :thin, :color => "00", :edges => edges })
             end
 
-            if [:colspan].include?(@option[:integrate_cells])
+            if [:colspan, :both].include?(@option[:integrate_cells])
               if item.level < max_level
                 ws.merge_cells(ws.rows.last.cells[((item.level - 1)..(max_level - 1))])
               end
+            end
+
+            node.ancestors.inject(node) do |c_node, a_node|
+              rowspan_cells[a_node.item.level - 1] << ws.rows.last.cells[a_node.item.level - 1]
+              unless c_node.next # if c_node is last?
+                if [:rowspan, :both].include?(@option[:integrate_cells])
+                  if rowspan_cells[a_node.item.level - 1].length > 1
+                    ws.merge_cells(rowspan_cells[a_node.item.level - 1])
+                  end
+                end
+                rowspan_cells[a_node.item.level - 1].clear 
+              end
+              a_node
             end
           end
         end

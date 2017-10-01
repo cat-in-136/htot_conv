@@ -32,5 +32,25 @@ class XlsxType4Test < Minitest::Test
         assert_equal(%w[B2:C2], ws.send(:merged_cells).to_a.sort)
       end
     end
+
+    gen = ::HTOTConv::Generator::XlsxType4.new(reference_outline, :integrate_cells => :rowspan)
+    p = Axlsx::Package.new
+    p.workbook do |wb|
+      wb.add_worksheet do |ws|
+        gen.output_to_worksheet(ws)
+
+        assert_equal(%w[A2:A3], ws.send(:merged_cells).to_a.sort)
+      end
+    end
+    
+    gen = ::HTOTConv::Generator::XlsxType4.new(reference_outline, :integrate_cells => :both)
+    p = Axlsx::Package.new
+    p.workbook do |wb|
+      wb.add_worksheet do |ws|
+        gen.output_to_worksheet(ws)
+
+        assert_equal(%w[A2:A3 B2:C2], ws.send(:merged_cells).to_a.sort)
+      end
+    end
   end
 end

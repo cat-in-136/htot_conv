@@ -107,10 +107,6 @@ So, this document does not correctly represent type-3 xlsx spread sheet.
 | 1  | 1.1 |       | 1.1(1)   | 1.1(2)   | 
 |    | 1.2 | 1.2.1 | 1.2.1(1) | 1.2.1(2) | 
 
-Not implemented (TODO):
-
- * Cell integration over column. (integration over row is supported)
-
 #### `xlsx_type5`
 
 | H1 | H2  | H3    | H(1)     | H(2)     | 
