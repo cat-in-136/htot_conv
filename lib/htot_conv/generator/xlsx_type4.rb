@@ -11,7 +11,7 @@ module HTOTConv
           :integrate_cells => {
             :default => nil,
             :pat => [:colspan, :rowspan, :both],
-            :desc => "integrate key cells (specify 'colspan', 'rowspan' or 'all')",
+            :desc => "integrate key cells (specify 'colspan', 'rowspan' or 'both')",
           },
         }
       end
