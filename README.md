@@ -43,6 +43,11 @@ Install `htot_conv` via RubyGems. Simply run the following command to install:
  * HTML `<ul><li>` and/or `<ol><li>` [nesting list](https://www.w3.org/wiki/HTML_lists#Nesting_lists).
  * All text outside of `<li>` elements is ignored.
 
+#### `opml`
+
+ * [OPML](http://dev.opml.org/)
+ * Treat the `text` attribute as a key text, the other attributes as values.
+
 ### Types of output
 
 The sample input used in this section are as follows:

@@ -2,6 +2,7 @@
 require 'htot_conv/parser/base.rb'
 require 'htot_conv/parser/simple_text.rb'
 require 'htot_conv/parser/html_list.rb'
+require 'htot_conv/parser/opml.rb'
 
 module HTOTConv
   module Parser
