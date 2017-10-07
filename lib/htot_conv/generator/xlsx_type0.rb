@@ -9,7 +9,7 @@ module HTOTConv
       def output_to_worksheet(ws)
         max_value_length = @data.max_value_length
 
-        ws.add_row([@data.key_header[0], 'Level'].concat(
+        ws.add_row([@data.key_header[0], 'Outline Level'].concat(
           HTOTConv::Util.pad_array(@data.value_header, max_value_length)),
         :style => Axlsx::STYLE_THIN_BORDER)
 
