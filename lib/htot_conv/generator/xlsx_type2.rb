@@ -62,7 +62,22 @@ module HTOTConv
             end
             outline_begin[item.level - 1] = item_index
           end
-          #ws.sheet_pr.outline_pr.summary_below = false
+
+          # PR randym/axlsx#440 has been added to master branch
+          # https://github.com/randym/axlsx/commit/c80c8b9d9be5542471d66afcc2ce4ddd80cac1f7
+          # but latest release on rubygems does not contain this.
+          # So apply monkey patch to ws.sheet_pr.
+          if defined? ws.sheet_pr.outline_pr
+            ws.sheet_pr.outline_pr.summary_below = false
+          else
+            class << ws.sheet_pr # monkey patch
+              def to_xml_string(str="".dup)
+                tmp_str = "".dup
+                super(tmp_str)
+                str << tmp_str.sub('<pageSetUpPr', '<outlinePr summaryBelow="0" /><pageSetUpPr')
+              end
+            end
+          end
         end
 
         case @option[:integrate_cells]
