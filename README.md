@@ -88,8 +88,6 @@ Not implemented (TODO):
 
 #### `xlsx_type3`
 
-Not supported (implemented) as of now.
-
 | H1 | H(1) |        |          | H(2)     | 
 |----|------|--------|----------|----------| 
 | 1  | 1(1) |        |          | 1(2)     | 
@@ -97,7 +95,7 @@ Not supported (implemented) as of now.
 |    | 1.2  | 1.2(1) |          | 1.2(2)   | 
 |    |      | 1.2.1  | 1.2.1(1) | 1.2.1(2) | 
 
-TODO: Github Flavored Markdown does not support for row span.
+TODO: Github Flavored Markdown does not support the column span.
 So, this document does not correctly represent type-3 xlsx spread sheet.
 
 #### `xlsx_type4`
