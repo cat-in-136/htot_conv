@@ -54,8 +54,6 @@ class XlsxType3Test < Minitest::Test
         assert_equal(%w[A2:A5 B1:D1 B2:D2 B4:B5 C3:D3 C4:D4], ws.send(:merged_cells).to_a.sort)
       end
     end
-
-    p.serialize("/tmp/hoge.xlsx")
   end
 
 end
