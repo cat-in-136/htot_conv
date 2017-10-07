@@ -46,4 +46,16 @@ class XlsxType2Test < Minitest::Test
     end
   end
 
+  def test_output_worksheet_with_outline_rows
+    gen = ::HTOTConv::Generator::XlsxType2.new(reference_outline, :outline_rows => true)
+    p = Axlsx::Package.new
+    p.workbook do |wb|
+      wb.add_worksheet do |ws|
+        gen.output_to_worksheet(ws)
+
+        assert_equal([nil, nil, 1, 1, 2], ws.rows.map { |v| v.outline_level })
+      end
+    end
+  end
+
 end

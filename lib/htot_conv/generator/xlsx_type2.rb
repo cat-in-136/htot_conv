@@ -13,6 +13,11 @@ module HTOTConv
             :pat => [:colspan, :rowspan],
             :desc => "integrate key cells (specify 'colspan' or 'rowspan')",
           },
+          :outline_rows => {
+            :default => false,
+            :pat => FalseClass,
+            :desc => "group rows (default: no)",
+          },
         }
       end
 
@@ -41,6 +46,23 @@ module HTOTConv
             ws.rows.last.cells[level - 1].style = ws.styles.add_style(
               :border => { :style => :thin, :color => "00", :edges => edges })
           end
+        end
+
+        if @option[:outline_rows]
+          outline_begin = Array.new(max_level, nil)
+          dummy_end_item = HTOTConv::Outline::Item.new(nil, 1, nil)
+          @data.item.concat([dummy_end_item]).each_with_index do |item, item_index|
+            (item.level..max_level).each do |level|
+              if outline_begin[level - 1]
+                if outline_begin[level - 1] < item_index - 1
+                  ws.outline_level_rows((outline_begin[level - 1] + 1) + 1, (item_index - 1) + 1, level, false)
+                end
+                outline_begin[level - 1] = nil
+              end
+            end
+            outline_begin[item.level - 1] = item_index
+          end
+          #ws.sheet_pr.outline_pr.summary_below = false
         end
 
         case @option[:integrate_cells]
