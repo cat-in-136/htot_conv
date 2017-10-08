@@ -13,13 +13,22 @@ module HTOTConv
       @item << Item.new(*args)
     end
 
+    def validate
+      raise ValidationError, "key_header must be an array" unless @key_header.kind_of?(Array)
+      raise ValidationError, "key_header elements must be strings." unless @key_header.all? { |v| v.nil? || v.kind_of?(String) }
+      raise ValidationError, "value_header must be an array" unless @value_header.kind_of?(Array)
+      raise ValidationError, "value_header elements must be strings." unless @value_header.all? { |v| v.nil? || v.kind_of?(String) }
+      raise ValidationError, "item must be an array" unless @item.kind_of?(Array)
+      @item.each { |item| item.validate }
+    end
+
     def valid?
-      @key_header.kind_of?(Array) &&
-        @key_header.all? { |v| v.nil? || v.kind_of?(String) } &&
-        @value_header.kind_of?(Array) &&
-        @value_header.all? { |v| v.nil? || v.kind_of?(String) } &&
-        @item.kind_of?(Array) &&
-        @item.all? { |item| item.valid? }
+      begin
+        validate
+        true
+      rescue ValidationError
+        false
+      end
     end
 
     def max_level
@@ -62,12 +71,24 @@ module HTOTConv
       root
     end
 
+    class ValidationError < RuntimeError
+    end
+
     Item = Struct.new(:key, :level, :value) do
+      def validate
+        raise ValidationError, "item level for item \"#{key}\" must be an integer" unless self.level.kind_of?(Numeric)
+        raise ValidationError, "item level for item \"#{key}\" must be positive" unless self.level > 0
+        raise ValidationError, "item level for item \"#{key}\" must be an integer" unless (self.level.to_i == self.level)
+        raise ValidationError, "value for item \"#{key}\" must be an array" unless self.value.kind_of?(Array)
+      end
+
       def valid?
-        self.level.kind_of?(Numeric) &&
-          (self.level > 0) &&
-          (self.level.to_i == self.level) &&
-          self.value.kind_of?(Array)
+        begin
+          validate
+          true
+        rescue ValidationError
+          false
+        end
       end
     end
 

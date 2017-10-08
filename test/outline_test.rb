@@ -21,6 +21,31 @@ class OutlineTest < Minitest::Test
     assert_equal("key2", outline.item[1].key)
   end
 
+  def test_validate
+    outline = HTOTConv::Outline.new
+    assert_raises(HTOTConv::Outline::ValidationError) { outline.validate }
+
+    outline.key_header   = %w[H1 H2 H3]
+    outline.value_header = %w[H(1) H(2)]
+    outline.add_item("key", 1, %w[val1 val2])
+    outline.validate
+
+    outline.key_header = nil
+    assert_raises(HTOTConv::Outline::ValidationError) { outline.validate }
+    outline.key_header = [1, 2]
+    assert_raises(HTOTConv::Outline::ValidationError) { outline.validate }
+    outline.key_header = %w[H1 H2 H3]
+
+    outline.value_header = nil
+    assert_raises(HTOTConv::Outline::ValidationError) { outline.validate }
+    outline.value_header = [1, 2]
+    assert_raises(HTOTConv::Outline::ValidationError) { outline.validate }
+    outline.value_header = %w[H(1) H(2)]
+
+    outline.add_item("invalid")
+    assert_raises(HTOTConv::Outline::ValidationError) { outline.validate }
+  end
+
   def test_valid
     outline = HTOTConv::Outline.new
     refute(outline.valid?)
@@ -135,6 +160,30 @@ class OutlineItemTest < Minitest::Test
     assert_equal("key", item.key)
     assert_equal(1, item.level)
     assert_equal(%w[val1 val2], item.value)
+  end
+
+  def test_validate
+    item = HTOTConv::Outline::Item.new
+    assert_raises(HTOTConv::Outline::ValidationError) { item.validate }
+
+    item = HTOTConv::Outline::Item.new('key', 1, %w[val1 val2])
+    item.validate
+
+    item = HTOTConv::Outline::Item.new('key', 1.1, %w[val1 val2])
+    assert_raises(HTOTConv::Outline::ValidationError) { item.validate }
+    item = HTOTConv::Outline::Item.new('key', 0, %w[val1 val2])
+    assert_raises(HTOTConv::Outline::ValidationError) { item.validate }
+    item = HTOTConv::Outline::Item.new('key', "1", %w[val1 val2])
+    assert_raises(HTOTConv::Outline::ValidationError) { item.validate }
+
+    item = HTOTConv::Outline::Item.new('key', 1, [])
+    item.validate
+    item = HTOTConv::Outline::Item.new('key', 1, nil)
+    assert_raises(HTOTConv::Outline::ValidationError) { item.validate }
+    item = HTOTConv::Outline::Item.new('key', 1, {})
+    assert_raises(HTOTConv::Outline::ValidationError) { item.validate }
+    item = HTOTConv::Outline::Item.new('key', 1, (1..2))
+    assert_raises(HTOTConv::Outline::ValidationError) { item.validate }
   end
 
   def test_valid
