@@ -30,20 +30,20 @@ module HTOTConv
       end
 
       def parse(input)
-        indent_regexp = Regexp.new("^(?<indents>(#{Regexp.escape(option[:indent])})*)")
-        delimiter_regexp = (option[:delimiter].kind_of?(String))? Regexp.new(Regexp.escape(option[:delimiter])) : option[:delimiter]
+        indent_regexp = Regexp.new("^(?<indents>(#{Regexp.escape(@option[:indent])})*)")
+        delimiter_regexp = (@option[:delimiter].kind_of?(String))? Regexp.new(Regexp.escape(@option[:delimiter])) : @option[:delimiter]
         outline = HTOTConv::Outline.new
         outline.key_header = []
-        outline.value_header = option[:value_header]
+        outline.value_header = @option[:value_header]
 
         input.each_line do |line|
-          next if ((line.chomp == "") && (!option[:preserve_empty_line]))
+          next if ((line.chomp == "") && (!@option[:preserve_empty_line]))
 
           level = 1
           value = []
-          if (option[:indent] || '').length > 0
+          if (@option[:indent] || '').length > 0
             indents = indent_regexp.match(line)[:indents]
-            level = 1 + indents.length / option[:indent].length
+            level = 1 + indents.length / @option[:indent].length
             line = line.sub(indent_regexp, "")
           end
 
