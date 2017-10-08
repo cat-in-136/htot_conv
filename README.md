@@ -38,6 +38,10 @@ Install `htot_conv` via RubyGems. Simply run the following command to install:
    * `<indent>` : specified by `--from-indent` option
    * `<delimiter>` : specified by `--from-delimiter` option
 
+#### `dir_tree`
+
+ * Directory tree with the glob pattern specified by `--from-glob-pattern` (default: `**/*`)
+
 #### `html_list`
 
  * HTML `<ul><li>` and/or `<ol><li>` [nesting list](https://www.w3.org/wiki/HTML_lists#Nesting_lists).

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require 'htot_conv/parser/base.rb'
 require 'htot_conv/parser/simple_text.rb'
+require 'htot_conv/parser/dir_tree.rb'
 require 'htot_conv/parser/html_list.rb'
 require 'htot_conv/parser/opml.rb'
 
