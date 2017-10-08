@@ -23,9 +23,9 @@ module HTOTConv
         ws.add_row([
           @data.key_header[0],
           *(HTOTConv::Util.pad_array([@data.value_header[0]], max_level)),
-          *(@data.value_header.last(@data.value_header.length - 1)),
+          *((@data.value_header.length <= 1)? [] : @data.value_header.last(@data.value_header.length - 1)),
         ], :style => Axlsx::STYLE_THIN_BORDER)
-        1.upto(max_level + 1) do |col_idx|
+        1.upto(max_level) do |col_idx|
           edges = [:top, :bottom]
           edges << :left if (col_idx <= 1)
           edges << :right if (col_idx >= max_level)
@@ -37,12 +37,13 @@ module HTOTConv
           key_value_cell = Array.new(max_level + 1, nil)
           key_value_cell[item.level - 1] = item.key
           key_value_cell[item.level    ] = item.value[0]
-          rest_value_cell = HTOTConv::Util.pad_array(item.value.last(item.value.length - 1), max_value_length - 1)
+          rest_value_cell = (item.value.length <= 1)? [] :
+            HTOTConv::Util.pad_array(item.value.last(item.value.length - 1), max_value_length - 1)
 
           ws.add_row(key_value_cell.concat(rest_value_cell),
                      :style => Axlsx::STYLE_THIN_BORDER)
 
-          0.upto(max_level + 1) do |col_idx|
+          0.upto(max_level) do |col_idx|
             edges = []
 
             edges << :left if (col_idx <= item.level)

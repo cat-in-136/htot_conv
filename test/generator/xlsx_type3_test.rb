@@ -22,6 +22,45 @@ class XlsxType3Test < Minitest::Test
         assert_empty(ws.send(:merged_cells).to_a)
       end
     end
+
+    outline = ::HTOTConv::Outline.new
+    outline.add_item("1", 1, [])
+    outline.add_item("1.1", 2, %w[1.1(1)])
+    outline.key_header = %w[H1]
+    outline.value_header = %w[H(1)]
+    gen = ::HTOTConv::Generator::XlsxType3.new(outline)
+    p = Axlsx::Package.new
+    p.workbook do |wb|
+      wb.add_worksheet do |ws|
+        gen.output_to_worksheet(ws)
+
+        assert_equal([
+          ["H1", "H(1)", nil,    ],
+          [1,    nil,    nil,    ],
+          [nil,  1.1,    "1.1(1)"],
+        ].flatten, ws["A1:C3"].map {|v| v.value })
+
+        assert_empty(ws.send(:merged_cells).to_a)
+      end
+    end
+
+    outline.item.each { |v| v.value = [] }
+    outline.value_header = []
+    gen = ::HTOTConv::Generator::XlsxType3.new(outline)
+    p = Axlsx::Package.new
+    p.workbook do |wb|
+      wb.add_worksheet do |ws|
+        gen.output_to_worksheet(ws)
+
+        assert_equal([
+          ["H1", nil,],
+          [1,    nil,],
+          [nil,  1.1,],
+        ].flatten, ws["A1:B3"].map {|v| v.value })
+
+        assert_empty(ws.send(:merged_cells).to_a)
+      end
+    end
   end
 
   def test_output_worksheet_with_integrate_cells
