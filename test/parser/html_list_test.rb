@@ -5,10 +5,11 @@ class HtmlListTest < Minitest::Test
   def test_initialize
     parser = ::HTOTConv::Parser::HtmlList.new
     refute_nil(parser)
+    assert_equal([], parser.option[:key_header])
   end
 
   def test_parse
-    parser = ::HTOTConv::Parser::HtmlList.new
+    parser = ::HTOTConv::Parser::HtmlList.new(:key_header => %w[H1 H2 H3])
     outline = parser.parse(<<EOD)
 <h1>**Dummy**</h1>
 <ul>
@@ -26,7 +27,7 @@ class HtmlListTest < Minitest::Test
 **Dummy**
 EOD
     expected_outline = reference_outline
-    expected_outline.key_header = expected_outline.value_header = []
+    expected_outline.value_header = []
     expected_outline.item.each do |item| item.value = [] end
     assert_equal(expected_outline, outline)
 

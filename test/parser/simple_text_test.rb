@@ -6,6 +6,7 @@ class SimpleTextTest < Minitest::Test
     parser = ::HTOTConv::Parser::SimpleText.new
     assert_equal("\t", parser.option[:indent])
     assert_nil(parser.option[:delimiter])
+    assert_equal([], parser.option[:key_header])
     assert_equal([], parser.option[:value_header])
     refute(parser.option[:preserve_empty_line])
 
@@ -45,7 +46,7 @@ EOD
     expected_outline.key_header = expected_outline.value_header = []
     assert_equal(expected_outline, outline)
 
-    parser = ::HTOTConv::Parser::SimpleText.new({:indent => '  ', :delimiter => /\s*,\s*/, :preserve_empty_line => true, :value_header => %w[H(1) H(2)]})
+    parser = ::HTOTConv::Parser::SimpleText.new({:indent => '  ', :delimiter => /\s*,\s*/, :preserve_empty_line => true, :key_header => %w[H1 H2 H3], :value_header => %w[H(1) H(2)]})
     outline = parser.parse(<<EOD)
 1           , 1(1),     1(2)
   1.1       , 1.1(1),   1.1(2)
@@ -55,7 +56,6 @@ EOD
 EOD
     expected_outline = reference_outline
     expected_outline.add_item(nil, 1, [])
-    expected_outline.key_header = []
     assert_equal(expected_outline, outline)
   end
 end

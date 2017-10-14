@@ -17,9 +17,14 @@ module HTOTConv
             :desc => "separator character of additional data",
           },
           :preserve_empty_line => {
-            :defalut => false,
+            :default => false,
             :pat => FalseClass,
             :desc => "preserve empty line as a level-1 item (default: no)",
+          },
+          :key_header => {
+            :default => [],
+            :pat => Array,
+            :desc => "key header",
           },
           :value_header => {
             :default => [],
@@ -33,7 +38,7 @@ module HTOTConv
         indent_regexp = Regexp.new("^(?<indents>(#{Regexp.escape(@option[:indent])})*)")
         delimiter_regexp = (@option[:delimiter].kind_of?(String))? Regexp.new(Regexp.escape(@option[:delimiter])) : @option[:delimiter]
         outline = HTOTConv::Outline.new
-        outline.key_header = []
+        outline.key_header = @option[:key_header]
         outline.value_header = @option[:value_header]
 
         input.each_line do |line|

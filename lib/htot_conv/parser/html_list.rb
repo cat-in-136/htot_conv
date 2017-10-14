@@ -4,9 +4,19 @@ require 'htot_conv/parser/base'
 module HTOTConv
   module Parser
     class HtmlList < Base
+      def self.option_help
+        {
+          :key_header => {
+            :default => [],
+            :pat => Array,
+            :desc => "key header",
+          },
+        }
+      end
+
       def parse(input)
         outline = HTOTConv::Outline.new
-        outline.key_header = []
+        outline.key_header = @option[:key_header]
         outline.value_header = []
 
         parser = Nokogiri::HTML::SAX::Parser.new(ListDoc.new(outline))

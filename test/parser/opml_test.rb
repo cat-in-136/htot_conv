@@ -5,10 +5,11 @@ class OpmlTest < Minitest::Test
   def test_initialize
     parser = ::HTOTConv::Parser::Opml.new
     refute_nil(parser)
+    assert_equal([], parser.option[:key_header])
   end
 
   def test_parse
-    parser = ::HTOTConv::Parser::Opml.new
+    parser = ::HTOTConv::Parser::Opml.new(:key_header => %w[H1 H2 H3])
     outline = parser.parse(<<EOD)
 <?xml version="1.0" encoding="UTF-8"?>
 <opml version="1.0">
@@ -26,7 +27,6 @@ class OpmlTest < Minitest::Test
 </opml>
 EOD
     expected_outline = reference_outline
-    expected_outline.key_header = []
     expected_outline.value_header = %w[v1 v2]
     assert_equal(expected_outline, outline)
 
