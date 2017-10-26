@@ -30,10 +30,9 @@ module HTOTConv
             item = node.item
 
             key_cell = Array.new(max_level, nil)
-            key_cell[node.item.level - 1] = item.key
-            node.ancestors.each do |ancestor|
-              key_cell[ancestor.item.level - 1] = ancestor.item.key if ancestor.item
-              break if ancestor.prev
+            [node].concat(node.ancestors.to_a).each do |c_node|
+              key_cell[c_node.item.level - 1] = c_node.item.key if c_node.item
+              break if c_node.prev
             end
 
             value_cell = HTOTConv::Util.pad_array(item.value, max_value_length)
@@ -41,14 +40,15 @@ module HTOTConv
             ws.add_row(key_cell.concat(value_cell),
                        :style => Axlsx::STYLE_THIN_BORDER)
 
-            [node].concat(node.ancestors.to_a).each do |ancestor|
-              if (ancestor.parent && ancestor.parent.item && ancestor.parent.item.level)
+            node.ancestors.each_with_object([node]) do |c_node, descendants|
+              if (c_node.item && c_node.item.level)
                 edges = [:left, :right]
-                edges << :top unless ancestor.prev
-                edges << :bottom unless ancestor.next
-                ws.rows.last.cells[ancestor.parent.item.level - 1].style = ws.styles.add_style(
+                edges << :top unless (descendants.any? { |v| v.prev })
+                edges << :bottom unless (descendants.any? { |v| v.next })
+                ws.rows.last.cells[c_node.item.level - 1].style = ws.styles.add_style(
                   :border => { :style => :thin, :color => "00", :edges => edges })
               end
+              descendants.unshift(c_node)
             end
             (item.level..max_level).each do |level|
               edges = [:top, :bottom]
@@ -64,17 +64,17 @@ module HTOTConv
               end
             end
 
-            node.ancestors.inject(node) do |c_node, a_node|
-              rowspan_cells[a_node.item.level - 1] << ws.rows.last.cells[a_node.item.level - 1]
-              unless c_node.next # if c_node is last?
+            node.ancestors.each_with_object([node]) do |c_node, descendants|
+              rowspan_cells[c_node.item.level - 1] << ws.rows.last.cells[c_node.item.level - 1]
+              unless (descendants.any? { |v| v.next })
                 if [:rowspan, :both].include?(@option[:integrate_cells])
-                  if rowspan_cells[a_node.item.level - 1].length > 1
-                    ws.merge_cells(rowspan_cells[a_node.item.level - 1])
+                  if rowspan_cells[c_node.item.level - 1].length > 1
+                    ws.merge_cells(rowspan_cells[c_node.item.level - 1])
                   end
                 end
-                rowspan_cells[a_node.item.level - 1].clear 
+                rowspan_cells[c_node.item.level - 1].clear
               end
-              a_node
+              descendants.unshift(c_node)
             end
           end
         end
