@@ -16,7 +16,7 @@ module HTOTConv
       end
       attr_accessor :options, :from_options, :to_options
 
-      def define_options(opts)
+      def define_options(opts, io_filter=false)
         opts.banner       = %q{Hierarchical-Tree Outline Text Converter}
         opts.define_head    %q{Usage: htot_conv [options] [input] [output]}
         opts.separator      %q{}
@@ -53,11 +53,31 @@ module HTOTConv
 
         opts.separator ""
         opts.separator "I/O Options:"
-        define_sub_options(opts, HTOTConv::Parser, "from") do |key, v|
-          @from_options[key] = v
+        if io_filter
+          define_sub_options_of(opts, HTOTConv::Parser, options[:from_type], "from") do |key, v|
+            @from_options[key] = v
+          end
+          define_sub_options_of(opts, HTOTConv::Generator, options[:to_type], "from") do |key, v|
+            @to_options[key] = v
+          end
+        else
+          define_sub_options(opts, HTOTConv::Parser, "from") do |key, v|
+            @from_options[key] = v
+          end
+          define_sub_options(opts, HTOTConv::Generator, "to") do |key, v|
+            @to_options[key] = v
+          end
         end
-        define_sub_options(opts, HTOTConv::Generator, "to") do |key, v|
-          @to_options[key] = v
+      end
+
+      private
+      def define_sub_options_of(opts, klass, type, prefix) # :yields: key, v
+        type_klass = klass.const_get(Rinne.camelize(type.to_s))
+        type_klass.option_help.each do |key,v|
+          long_option = "--#{prefix}-#{key.to_s.tr('_','-')}"
+          opts.on("#{long_option}=VAL", v[:pat], "For #{type}, #{v[:desc]}") do |v|
+            yield key, v
+          end
         end
       end
 
@@ -101,6 +121,17 @@ module HTOTConv
       script_opts = ScriptOptions.new
       OptionParser.new do |opts|
         script_opts.define_options(opts)
+
+        begin
+          opts.parse!(args.dup)
+        rescue OptionParser::ParseError => ex
+          $stderr << ex.message << "\n"
+          exit 1
+        end
+      end
+
+      OptionParser.new do |opts|
+        script_opts.define_options(opts, true)
 
         begin
           opts.parse!(args)

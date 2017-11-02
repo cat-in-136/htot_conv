@@ -141,9 +141,16 @@ EOD
   def test_main_wrong_argument
     out, err = capture_io do
       assert_exit_with(1) do
-        HTOTConv::CLI.main(%w[--wrong-argument])
+        HTOTConv::CLI.main(%w[--wrong-argument dummy dummy])
       end
     end
     assert_equal("invalid option: --wrong-argument\n", err)
+
+    out, err = capture_io do
+      assert_exit_with(1) do
+        HTOTConv::CLI.main(%w[-f opml --from-preserve-empty-line=yes dummy dummy])
+      end
+    end
+    assert_equal("invalid option: --from-preserve-empty-line=yes\n", err)
   end
 end
