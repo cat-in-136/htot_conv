@@ -22,12 +22,9 @@ module HTOTConv
       end
 
       def output(outputfile)
-        p = Axlsx::Package.new
-        p.workbook do |wb|
-          wb.add_worksheet do |ws|
-            output_to_worksheet(ws)
-          end
-        end
+        wb = RubyXL::Workbook.new
+        output_to_worksheet(wb[0])
+        wb.write(outputfile)
         p.serialize(outputfile)
       end
     end
