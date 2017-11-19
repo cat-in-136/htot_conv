@@ -14,7 +14,14 @@ module HTOTConv
         @from_options = {}
         @to_options = {}
       end
-      attr_accessor :options, :from_options, :to_options
+      attr_reader :options, :from_options, :to_options
+
+      def freeze
+        @options.freeze
+        @from_options.freeze
+        @to_options.freeze
+        super
+      end
 
       def define_options(opts, io_filter=false)
         opts.banner       = %q{Hierarchical-Tree Outline Text Converter}
@@ -26,10 +33,10 @@ module HTOTConv
         to_types = HTOTConv::Generator.types.map { |v| [v, v.to_s.tr("_", "-")] }.flatten
 
         opts.on("-f", "--from-type=TYPE", from_types, "type of input (default: #{options[:from_type]})") do |v|
-          options[:from_type] = v.to_s.tr("-", "_")
+          @options[:from_type] = v.to_s.tr("-", "_")
         end
         opts.on("-t", "--to-type=TYPE", to_types, "type of output (default: #{options[:to_type]})") do |v|
-          options[:to_type] = v.to_s.tr("-", "_")
+          @options[:to_type] = v.to_s.tr("-", "_")
         end
         opts.on("-l", "--list-type", "list input/output type") do
           $stdout << "type of input:\n"
@@ -54,10 +61,10 @@ module HTOTConv
         opts.separator ""
         opts.separator "I/O Options:"
         if io_filter
-          define_sub_options_of(opts, HTOTConv::Parser, options[:from_type], "from") do |key, v|
+          define_sub_options_of(opts, HTOTConv::Parser, @options[:from_type], "from") do |key, v|
             @from_options[key] = v
           end
-          define_sub_options_of(opts, HTOTConv::Generator, options[:to_type], "to") do |key, v|
+          define_sub_options_of(opts, HTOTConv::Generator, @options[:to_type], "to") do |key, v|
             @to_options[key] = v
           end
         else
@@ -124,7 +131,7 @@ module HTOTConv
       end
     end
 
-    def optparse(args)
+    def optparse!(args)
       script_opts = ScriptOptions.new
       OptionParser.new do |opts|
         script_opts.define_options(opts)
@@ -147,12 +154,12 @@ module HTOTConv
           exit 1
         end
       end
-      script_opts
+      script_opts.freeze
     end
-    module_function :optparse
+    module_function :optparse!
 
     def main(args=ARGV)
-      script_opts = HTOTConv::CLI.optparse(args)
+      script_opts = HTOTConv::CLI.optparse!(args)
       options = script_opts.options
       from_options = script_opts.from_options
       to_options = script_opts.to_options
