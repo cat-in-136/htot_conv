@@ -152,5 +152,15 @@ EOD
       end
     end
     assert_equal("invalid option: --from-preserve-empty-line=yes\n", err)
+
+    out, err = capture_io do
+      assert_raises(Errno::ENOENT) do
+        begin
+          HTOTConv::CLI.main(%w[-t xlsx_type2 --to-outline-rows=true dummy dummy])
+        rescue SystemExit # if option parser does not work well.
+          flunk "SystemExit: \n#{out}\n#{err}"
+        end
+      end
+    end
   end
 end
