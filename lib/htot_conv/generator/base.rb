@@ -1,4 +1,7 @@
 # frozen_string_literal: true
+
+require 'rubyXL'
+
 module HTOTConv
   module Generator
     class Base
@@ -25,7 +28,6 @@ module HTOTConv
         wb = RubyXL::Workbook.new
         output_to_worksheet(wb[0])
         wb.write(outputfile)
-        p.serialize(outputfile)
       end
     end
   end
