@@ -9,7 +9,6 @@ class HTOTConvTest < Minitest::Test
     refute_nil ::HTOTConv::VERSION
   end
 
-=begin
   def test_convert
     has_xl_worksheets_sheet1_xml = false
 
@@ -45,7 +44,6 @@ EOD
 
     assert(has_xl_worksheets_sheet1_xml)
   end
-=end
 
   def test_parser_generator_types
     [::HTOTConv::Parser, ::HTOTConv::Generator].each do |klass|
