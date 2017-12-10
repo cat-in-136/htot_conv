@@ -15,6 +15,25 @@ def reference_outline
   outline
 end
 
+def wrt_worksheet
+  wb = RubyXL::Workbook.new
+  yield wb[0]
+end
+
+def range_to_a(range)
+  range = RubyXL::Reference.new(*range) unless range.kind_of?(RubyXL::Reference)
+
+  range.row_range.map do |row_num|
+    range.col_range.map do |col_num|
+      if block_given?
+        yield row_num.to_i, col_num.to_i
+      else
+        [row_num.to_i, col_num.to_i]
+      end
+    end
+  end
+end
+
 module MiniTest::Assertions
   def assert_exit_with(status) # :yield:
     ex = assert_raises(SystemExit) do
