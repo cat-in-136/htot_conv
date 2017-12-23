@@ -16,6 +16,8 @@ class XlsxType5Test < Minitest::Test
       ], range_to_a("A1:E3") { |r,c| ws[r][c].value })
 
       assert_empty(ws.merged_cells.to_a)
+
+      assert_equal(ws.auto_filter.ref, RubyXL::Reference.new("A1:E3"))
     end
   end
 
