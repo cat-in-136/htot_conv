@@ -68,7 +68,7 @@ module HTOTConv
         end
 
         ws.auto_filter ||= RubyXL::AutoFilter.new
-        ws.auto_filter.ref = RubyXL::Reference.new(0, 0, row_index - 1, max_level + max_value_length -1)
+        ws.auto_filter.ref = RubyXL::Reference.new(0, row_index - 1, 0, max_level + max_value_length -1)
       end
     end
   end
