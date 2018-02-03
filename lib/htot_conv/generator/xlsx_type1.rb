@@ -6,13 +6,13 @@ module HTOTConv
   module Generator
     class XlsxType1 < XlsxBase
       def self.option_help
-        {
+        super.merge({
           :outline_rows => {
             :default => false,
             :pat => FalseClass,
             :desc => "group rows (default: no)",
           },
-        }
+        })
       end
 
       def output_to_worksheet(ws)
