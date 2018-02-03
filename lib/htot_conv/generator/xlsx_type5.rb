@@ -6,13 +6,13 @@ module HTOTConv
   module Generator
     class XlsxType5 < XlsxBase
       def self.option_help
-        {
+        super.merge({
           :integrate_cells => {
             :default => nil,
             :pat => [:colspan],
             :desc => "integrate key cells (specify 'colspan')",
           },
-        }
+        })
       end
 
       def output_to_worksheet(ws)
