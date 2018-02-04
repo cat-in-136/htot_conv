@@ -35,6 +35,12 @@ The sample input used in this section are as follows:
  * key header: H1, H2, H3
  * value header: H(1), H(2)
 
+### common options
+
+`--shironuri=yes` : fill all the cells with white color
+
+![](image/output_xlsx_type2_shironuri.png)
+
 ## `xlsx_type0`
 
 ![](image/output_xlsx_type0.png)
@@ -42,6 +48,8 @@ The sample input used in this section are as follows:
 ## `xlsx_type1`
 
 ![](image/output_xlsx_type1.png)
+
+### options for `xlsx_type1`
 
 `--outline-rows=yes` : group rows
 
@@ -55,6 +63,8 @@ Not implemented (TODO):
 
 ![](image/output_xlsx_type2.png)
 
+### options for `xlsx_type2`
+
 `--integrate-cells={colspan,rowspan}` : group columns/rows.
 
 ![](image/output_xlsx_type2_integrate_cells_colspan.png)
@@ -67,6 +77,8 @@ Not implemented (TODO):
 
 ![](image/output_xlsx_type3.png)
 
+### options for `xlsx_type3`
+
 `--integrate-cells={colspan,rowspan,both}` : group columns/rows.
 
 ![](image/output_xlsx_type3_integrate_cells_both.png)
@@ -75,6 +87,8 @@ Not implemented (TODO):
 
 ![](image/output_xlsx_type4.png)
 
+### options for `xlsx_type4`
+
 `--integrate-cells={colspan,rowspan,both}` : group columns/rows.
 
 ![](image/output_xlsx_type4_integrate_cells_both.png)
@@ -82,6 +96,8 @@ Not implemented (TODO):
 ## `xlsx_type5`
 
 ![](image/output_xlsx_type5.png)
+
+### options for `xlsx_type5`
 
 `--integrate-cells=colspan` : group columns/rows.
 
