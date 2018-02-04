@@ -44,7 +44,12 @@ module HTOTConv
       private
       def shironuri(wb, ws)
         style_index = wb.modify_fill(nil, "ffffff")
-        ws.cols << RubyXL::ColumnRange.new(:min => 1, :max => 0x4000, :style_index => style_index)
+        ws.cols << RubyXL::ColumnRange.new(
+          :min => 1,
+          :max => 0x4000,
+          :style_index => style_index,
+          :width => RubyXL::ColumnRange::DEFAULT_WIDTH,
+        )
       end
     end
   end
