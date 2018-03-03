@@ -18,6 +18,11 @@
  * HTML `<ul><li>` and/or `<ol><li>` [nesting list](https://www.w3.org/wiki/HTML_lists#Nesting_lists).
  * All text outside of `<li>` elements is ignored.
 
+## `mspdi`
+
+ * MS Project 20xx XML Data Interchange (i.e. files saved as "XML" format on MS Project).
+ * Treat the task name as a key text, the other attributes as values.
+
 ## `opml`
 
  * [OPML](http://dev.opml.org/)
