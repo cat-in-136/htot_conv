@@ -3,7 +3,7 @@
 Convert from a simple hierarchical-tree outline text into ugly xlsx file
 
 [![Gem Version](https://badge.fury.io/rb/htot_conv.svg)](https://badge.fury.io/rb/htot_conv)
-[![Build Status](https://travis-ci.org/cat-in-136/htot_conv.svg?branch=master)](https://travis-ci.org/cat-in-136/htot_conv)
+[![Ruby](https://github.com/cat-in-136/htot_conv/workflows/Ruby/badge.svg)](https://github.com/cat-in-136/htot_conv/actions)
 
 ## Installation
 
