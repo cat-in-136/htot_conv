@@ -1,5 +1,8 @@
 # HTOTConv - Hierarchical-Tree Outline Text Converter
 
+> [!CAUTION]
+> **This project is archived and has been superseded by [htot-conv-rs](https://github.com/cat-in-136/htot-conv-rs).**
+
 Convert from a simple hierarchical-tree outline text into ugly xlsx file
 
 [![Gem Version](https://badge.fury.io/rb/htot_conv.svg)](https://badge.fury.io/rb/htot_conv)
